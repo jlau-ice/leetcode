@@ -5,6 +5,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
+// addTwoNumbers 2
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	d := &ListNode{
 		Val:  -1,
@@ -37,4 +38,19 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	}
 	return d.Next
+}
+
+// detectCycle 142
+func detectCycle(head *ListNode) *ListNode {
+	set := make(map[*ListNode]struct{})
+	for head != nil {
+		_, ok := set[head]
+		if ok {
+			return head
+		} else {
+			set[head] = struct{}{}
+		}
+		head = head.Next
+	}
+	return nil
 }
