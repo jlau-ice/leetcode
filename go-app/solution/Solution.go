@@ -54,3 +54,21 @@ func detectCycle(head *ListNode) *ListNode {
 	}
 	return nil
 }
+
+// removeNthFromEnd 19
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	cur := &ListNode{
+		Val:  -1,
+		Next: head,
+	}
+	fast, slow := cur, cur
+	for i := 0; i <= n; i++ {
+		fast = fast.Next
+	}
+	for fast != nil {
+		fast = fast.Next
+		slow = slow.Next
+	}
+	slow.Next = slow.Next.Next
+	return cur.Next
+}
