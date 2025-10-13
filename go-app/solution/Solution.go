@@ -85,16 +85,18 @@ func swapPairs(head *ListNode) *ListNode {
 	dummy := &ListNode{
 		Next: head,
 	}
-	l1, l2, l3 := dummy, dummy.Next, head.Next
-	for l1 != nil && l2 != nil && l3 != nil {
-		l1.Next = l2.Next
-		l2.Next = l3.Next
-		l3.Next = l1.Next
-		l1 = l1.Next.Next
+	temp := dummy
+	for temp != nil && temp.Next != nil && temp.Next.Next != nil {
+		node1 := temp.Next
+		node2 := node1.Next
 
+		temp.Next = node2
+		node1.Next = node2.Next
+		node2.Next = node1
+
+		temp = node1
 	}
-
-	return nil
+	return dummy.Next
 }
 
 // twoSum 1
