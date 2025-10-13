@@ -1,3 +1,5 @@
+import model.ListNode;
+
 import java.util.*;
 
 public class Solution {
@@ -27,7 +29,7 @@ public class Solution {
     }
 
     public int longestConsecutive(int[] nums) {
-        if (nums.length ==0 || nums.length == 1)  {
+        if (nums.length == 0 || nums.length == 1) {
             return nums.length;
         }
         Set<Integer> set = new HashSet<>();
@@ -48,7 +50,63 @@ public class Solution {
         return ans;
     }
 
-    public static void main(String[] args) {
+    //25题
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 1 || head.next == null) {
+            return head;
+        }
+        List<ListNode[]> list = new ArrayList<>();
+        List<ListNode> list1 = new ArrayList<>();
+        ListNode cur = head;
+        ListNode curHead = head;
+        int amount = 1;
+        while (cur != null) {
+            boolean flag = false;
+            if (amount % k == 0) {
+                flag = true;
+                ListNode temp = cur.next;
+                cur.next = null;
+                list1.add(curHead);
+                curHead = temp;
+                cur = temp;
+            }
+            if (!flag) {
+                cur = cur.next;
+            }
+            amount++;
+        }
+        for(ListNode a : list1) {
+            list.add(reverse(a));
+        }
+        for (int i = 0; i < list.size() - 1; i++) {
+            list.get(i)[1].next = list.get(i + 1)[0];
+        }
+        list.get(list.size() - 1)[1].next = curHead;
+        return list.get(0)[0];
+    }
 
+    public static ListNode[] reverse(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return new ListNode[]{pre, head};
+    }
+
+
+    public static void main(String[] args) {
+        ListNode listNode = new ListNode(1);
+        listNode.next = new ListNode(2);
+        listNode.next.next = new ListNode(3);
+        listNode.next.next.next = new ListNode(4);
+        listNode.next.next.next.next = new ListNode(5);
+        listNode.next.next.next.next.next = new ListNode(6);
+        listNode.next.next.next.next.next.next = new ListNode(7);
+        listNode.next.next.next.next.next.next.next = new ListNode(8);
+        ListNode a = reverseKGroup(listNode, 2);
     }
 }
