@@ -151,7 +151,7 @@ public class Solution {
         if (head == null || head.next == null) {
             return head;
         }
-        ListNode  pre = null;
+        ListNode pre = null;
         ListNode slow = head;
         ListNode fast = head;
         while (fast != null && fast.next != null) {
@@ -183,7 +183,54 @@ public class Solution {
         return dummy.next;
     }
 
+    // 3 题
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < s.length(); i++) {
+            int len = len(s, i);
+            max = Math.max(max, len);
+        }
+        return max;
+    }
+
+    public int len(String s, int i) {
+        Set<Character> set = new HashSet<>();
+        for (int j = i; j < s.length(); j++) {
+            boolean flag = set.add(s.charAt(j));
+            if (!flag) {
+                return set.size();
+            }
+        }
+        return set.size();
+    }
+
+    // 3题 滑动窗口解法
+    public static int lengthOfLongestSubstring1(String s) {
+        Set<Character> set = new HashSet<>();
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        int max = 0;
+        int i = 0, j = 0;
+        while (j < s.length()) {
+            while (set.contains(s.charAt(j))) {
+                set.remove(s.charAt(i));
+                i++;
+            }
+            if (!set.contains(s.charAt(j))) {
+                set.add(s.charAt(j));
+                j++;
+            }
+            max = Math.max(max, j - i + 1);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
+        System.out.println(lengthOfLongestSubstring1("pwwkew"));
         ListNode listNode1 = new ListNode(1);
         listNode1.next = new ListNode(2);
         listNode1.next.next = new ListNode(3);

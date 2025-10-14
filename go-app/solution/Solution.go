@@ -226,3 +226,24 @@ func merge(l1 *ListNode, l2 *ListNode) *ListNode {
 	}
 	return dummy.Next
 }
+
+// lengthOfLongestSubstring
+func lengthOfLongestSubstring(s string) int {
+	mySet := make(map[rune]struct{})
+	i := 0
+	j := 0
+	maxSize := 0
+	for j < len(s) {
+		for {
+			if _, ok := mySet[rune(s[j])]; !ok {
+				break
+			}
+			delete(mySet, rune(s[i]))
+			i++
+		}
+		mySet[rune(s[j])] = struct{}{}
+		maxSize = max(maxSize, j-i+1)
+		j++
+	}
+	return maxSize
+}
