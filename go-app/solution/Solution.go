@@ -181,3 +181,48 @@ func longestConsecutive2(nums []int) int {
 	}
 	return ans
 }
+
+// sortList 148
+func sortList(head *ListNode) *ListNode {
+	return sort1(head)
+}
+
+func sort1(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	fast := head
+	slow := head
+	var pre *ListNode
+	for fast != nil && fast.Next != nil {
+		pre = slow
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+
+	pre.Next = nil
+	l1 := sort1(fast)
+	l2 := sort1(fast)
+	return merge(l1, l2)
+}
+
+func merge(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{}
+	cur := dummy
+	for l1 != nil && l2 != nil {
+		if l1.Val > l2.Val {
+			cur.Next = l1
+			l1 = l1.Next
+		} else {
+			cur.Next = l2
+			l2 = l2.Next
+		}
+		cur = cur.Next
+	}
+	if l1 == nil {
+		cur.Next = l2
+	} else {
+		cur.Next = l1
+	}
+	return dummy.Next
+}

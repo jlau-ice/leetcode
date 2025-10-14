@@ -75,7 +75,7 @@ public class Solution {
             }
             amount++;
         }
-        for(ListNode a : list1) {
+        for (ListNode a : list1) {
             list.add(reverse(a));
         }
         for (int i = 0; i < list.size() - 1; i++) {
@@ -140,6 +140,47 @@ public class Solution {
             }
         }
         return count == n;
+    }
+
+    // 148
+    public ListNode sortList(ListNode head) {
+        return sort(head);
+    }
+
+    public ListNode sort(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode  pre = null;
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        pre.next = null;
+        ListNode l1 = sort(head);
+        ListNode l2 = sort(slow);
+        return merge(l1, l2);
+    }
+
+    // 合并两个有序
+    public ListNode merge(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode cur = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = l1 == null ? l2 : l1;
+        return dummy.next;
     }
 
     public static void main(String[] args) {
