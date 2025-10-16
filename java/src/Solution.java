@@ -323,12 +323,13 @@ public class Solution {
 
 
     public int[] searchRange(int[] nums, int target) {
-        return nums;
+        return new int[] { erfen(nums, target, true), erfen(nums, target, false) };
     }
 
-    public static int erfen(int[] nums, int target) {
+    public static int erfen(int[] nums, int target, boolean f) {
         int l = 0;
         int r = nums.length;
+        int rowIndex = -1;
         while (l < r) {
             int mid = (r - l) / 2 + l;
             if (nums[mid] < target) {
@@ -336,15 +337,19 @@ public class Solution {
             } else if (nums[mid] > target) {
                 r = mid;
             } else {
-                return mid;
+                rowIndex = mid;
+                // f=true 继续往左
+                if(f) {
+                    r =  mid;
+                } else {
+                    l = mid + 1;
+                }
             }
         }
-        return l;
+        return rowIndex;
     }
 
     public static void main(String[] args) {
         int[] arr = new int[]{2,2,333};
-        int erfen = erfen(arr, 2);
-        System.out.println(erfen);
     }
 }
