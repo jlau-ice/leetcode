@@ -1,4 +1,5 @@
 import model.ListNode;
+import model.TreeNode;
 
 import java.util.*;
 
@@ -229,18 +230,121 @@ public class Solution {
         return max;
     }
 
+    public static int nn(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return n * nn(n - 1);
+    }
+
+    public int climbStairs(int n) {
+        int[] cache = new int[n + 1];
+        return pal(n, cache);
+    }
+
+    public int pal(int n, int[] cache) {
+        if (n == 1) {
+            cache[n] = 1;
+            return 1;
+        }
+        if (n == 2) {
+            cache[n] = 2;
+            return 2;
+        }
+        if (cache[n] != 0) {
+            return cache[n];
+        }
+        cache[n] = pal(n - 1, cache) + pal(n - 2, cache);
+        return pal(n - 1, cache) + pal(n - 2, cache);
+    }
+
+
+    int maxDep;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        maxDepth(root);
+        return maxDep;
+    }
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        maxDep = Math.max(maxDep, left + right);
+        return Math.max(left, right) + 1;
+    }
+
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        List<List<Integer>> res = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            List<Integer> temp = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                temp.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            res.add(temp);
+        }
+        return res;
+    }
+
+    public int findMin(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+        if (nums[l] < nums[r - 1]) {
+            return nums[l];
+        }
+        while (l < r) {
+            int mid = (r - l) / 2 + l;
+            if (nums[mid] < nums[r]) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return nums[l];
+    }
+
+
+    public int[] searchRange(int[] nums, int target) {
+        return nums;
+    }
+
+    public static int erfen(int[] nums, int target) {
+        int l = 0;
+        int r = nums.length;
+        while (l < r) {
+            int mid = (r - l) / 2 + l;
+            if (nums[mid] < target) {
+                l = mid + 1;
+            } else if (nums[mid] > target) {
+                r = mid;
+            } else {
+                return mid;
+            }
+        }
+        return l;
+    }
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring1("pwwkew"));
-        ListNode listNode1 = new ListNode(1);
-        listNode1.next = new ListNode(2);
-        listNode1.next.next = new ListNode(3);
-        ListNode listNode2 = new ListNode(4);
-        listNode2.next = new ListNode(5);
-        listNode2.next.next = new ListNode(6);
-        ListNode listNode3 = new ListNode(7);
-        listNode3.next = new ListNode(8);
-        listNode3.next.next = new ListNode(9);
-        ListNode[] lists = new ListNode[]{listNode1, listNode2, listNode3};
-        ListNode a = mergeKLists(lists);
+        int[] arr = new int[]{2,2,333};
+        int erfen = erfen(arr, 2);
+        System.out.println(erfen);
     }
 }

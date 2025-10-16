@@ -2,6 +2,7 @@ import model.ListNode;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Solution141 {
     public boolean hasCycle(ListNode head) {

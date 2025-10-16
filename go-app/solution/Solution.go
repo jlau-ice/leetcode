@@ -1,12 +1,19 @@
 package main
 
 import (
+	"container/list"
 	"sort"
 )
 
 type ListNode struct {
 	Val  int
 	Next *ListNode
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
 
 // addTwoNumbers 2
@@ -229,21 +236,107 @@ func merge(l1 *ListNode, l2 *ListNode) *ListNode {
 
 // lengthOfLongestSubstring
 func lengthOfLongestSubstring(s string) int {
-	mySet := make(map[rune]struct{})
+	mySet := make(map[byte]struct{})
 	i := 0
 	j := 0
 	maxSize := 0
 	for j < len(s) {
-		for {
-			if _, ok := mySet[rune(s[j])]; !ok {
-				break
-			}
-			delete(mySet, rune(s[i]))
+		for _, ok := mySet[s[j]]; ok; _, ok = mySet[s[j]] {
+			delete(mySet, s[i])
 			i++
 		}
-		mySet[rune(s[j])] = struct{}{}
+		mySet[(s[j])] = struct{}{}
 		maxSize = max(maxSize, j-i+1)
 		j++
 	}
 	return maxSize
+}
+
+// diameterOfBinaryTree 542
+func diameterOfBinaryTree(root *TreeNode) int {
+	_, maxDiameter := maxDep(root)
+	return maxDiameter
+}
+
+func maxDep(root *TreeNode) (int, int) {
+	maxDiameter := 0
+	if root == nil {
+		return 0, 0
+	}
+	ldep, maxDiameter := maxDep(root.Left)
+	rdep, maxDiameter := maxDep(root.Right)
+	maxDiameter = max(ldep+rdep, maxDiameter)
+	return max(ldep, rdep) + 1, maxDiameter
+}
+
+// levelOrder 102
+func levelOrder(root *TreeNode) [][]int {
+	result := make([][]int, 0)
+	if root == nil {
+		return result
+	}
+	quen := list.New()
+	quen.PushBack(root)
+	for quen.Len() != 0 {
+		length := quen.Len()
+		temp := make([]int, 0)
+		for i := 0; i < length; i++ {
+			front := quen.Front().Value.(*TreeNode)
+			quen.Remove(quen.Front())
+			temp = append(temp, front.Val)
+			if front.Left != nil {
+				quen.PushBack(front.Left)
+			}
+			if front.Right != nil {
+				quen.PushBack(front.Right)
+			}
+		}
+		result = append(result, temp)
+	}
+	return result
+}
+
+// levelOrder2 102
+func levelOrder2(root *TreeNode) [][]int {
+	ret := [][]int{}
+	if root == nil {
+		return ret
+	}
+	q := []*TreeNode{root}
+	for i := 0; len(q) > 0; i++ {
+		ret = append(ret, []int{})
+		p := []*TreeNode{}
+		for j := 0; j < len(q); j++ {
+			node := q[j]
+			ret[i] = append(ret[i], node.Val)
+			if node.Left != nil {
+				p = append(p, node.Left)
+			}
+			if node.Right != nil {
+				p = append(p, node.Right)
+			}
+		}
+		q = p
+	}
+	return ret
+}
+
+// climbStairs
+func climbStairs(n int) int {
+	me := make([]int, n+1)
+	return fx(n, me)
+}
+
+func fx(n int, men []int) int {
+	if n == 1 {
+		return 1
+	}
+	if n == 2 {
+		return 2
+	}
+	if men[n] != 0 {
+		return men[n]
+	}
+	men[n] = fx(n-1, men) + fx(n-2, men)
+	return men[n]
 }
