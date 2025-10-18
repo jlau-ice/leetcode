@@ -349,7 +349,93 @@ public class Solution {
         return rowIndex;
     }
 
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int l1 = 0;
+        int r1 = m;
+        int row = 0;
+        while (l1 < r1) {
+            int m1 = (r1 - l1) / 2 + l1;
+            if (matrix[m1][0] > target) {
+                r1 = m1;
+            } else if (matrix[m1][0] < target) {
+                l1 = m1 + 1;
+            } else {
+                row = m1;
+            }
+        }
+        row = l1;
+        int l2 = 0;
+        int r2 = n;
+        while (l2 < r2) {
+            int m2 = (r2 - l2) / 2 + l2;
+            if (matrix[row][m2] > target) {
+                r2 = m2;
+            } else if (matrix[row][m2] < target) {
+                l2 = m2 + 1;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        int[] arr = new int[n1 + n2];
+        int i= 0;
+        int j = 0;
+        int k = 0;
+        while (i < n1 && j < n2) {
+            if (nums1[i] <= nums2[j]) {
+                arr[k] = nums1[i];
+                i++;
+            } else if (nums1[i] > nums2[j]) {
+                arr[k] = nums2[j];
+                j++;
+            }
+            k++;
+        }
+        if (i == n1) {
+            while (j < n2) {
+                arr[k++] = nums2[j++];
+            }
+        }else {
+            while (i < n1) {
+                arr[k++] = nums1[i];
+            }
+        }
+        if (arr.length % 2 == 0) {
+            int m1 = arr[arr.length / 2];
+            int m2 = arr[arr.length / 2 - 1];
+            return (m1 + m2) / 2.0;
+        }else {
+            return arr[arr.length / 2];
+        }
+    }
+
+    public static int maxArea(int[] height) {
+        int i = 0;
+        int j = height.length - 1;
+        int maxSize = 0;
+        while (i < j) {
+            maxSize = Math.max(maxSize, Math.min(height[i], height[j]) * (j - i));
+            if(height[j] > height[i]) {
+                i++;
+            }else {
+                j++;
+            }
+        }
+        return maxSize;
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{2,2,333};
+        int[] matrix = new int[]{1,8,6,2,5,4,8,3,7};
+
+        int a = maxArea(matrix);
     }
 }
