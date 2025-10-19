@@ -323,7 +323,7 @@ public class Solution {
 
 
     public int[] searchRange(int[] nums, int target) {
-        return new int[] { erfen(nums, target, true), erfen(nums, target, false) };
+        return new int[]{erfen(nums, target, true), erfen(nums, target, false)};
     }
 
     public static int erfen(int[] nums, int target, boolean f) {
@@ -339,8 +339,8 @@ public class Solution {
             } else {
                 rowIndex = mid;
                 // f=true 继续往左
-                if(f) {
-                    r =  mid;
+                if (f) {
+                    r = mid;
                 } else {
                     l = mid + 1;
                 }
@@ -386,7 +386,7 @@ public class Solution {
         int n1 = nums1.length;
         int n2 = nums2.length;
         int[] arr = new int[n1 + n2];
-        int i= 0;
+        int i = 0;
         int j = 0;
         int k = 0;
         while (i < n1 && j < n2) {
@@ -403,7 +403,7 @@ public class Solution {
             while (j < n2) {
                 arr[k++] = nums2[j++];
             }
-        }else {
+        } else {
             while (i < n1) {
                 arr[k++] = nums1[i];
             }
@@ -412,7 +412,7 @@ public class Solution {
             int m1 = arr[arr.length / 2];
             int m2 = arr[arr.length / 2 - 1];
             return (m1 + m2) / 2.0;
-        }else {
+        } else {
             return arr[arr.length / 2];
         }
     }
@@ -423,18 +423,44 @@ public class Solution {
         int maxSize = 0;
         while (i < j) {
             maxSize = Math.max(maxSize, Math.min(height[i], height[j]) * (j - i));
-            if(height[j] > height[i]) {
+            if (height[j] > height[i]) {
                 i++;
-            }else {
+            } else {
                 j++;
             }
         }
         return maxSize;
     }
 
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < nums.length - 2; i++) {
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum == 0) {
+                    res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+                    left++;
+                    right--;
+                }
+                if (sum > 0) {
+                    right--;
+                }
+                if (sum < 0) {
+                    left++;
+                }
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
-        int[] arr = new int[]{2,2,333};
-        int[] matrix = new int[]{1,8,6,2,5,4,8,3,7};
+        int[] arr = new int[]{2, 2, 333};
+        int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
 
         int a = maxArea(matrix);
     }
