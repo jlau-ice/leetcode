@@ -87,6 +87,58 @@ public class Solution {
             }
             result.add(list);
         }
+        Collections.reverse(result);
+        return result;
+    }
+
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                if (i==n-1) {
+                    result.add(node.val);
+                }
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> result = new ArrayList<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                sum += node.val;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            Double a = (double) (sum/n);
+            result.add(a);
+        }
         return result;
     }
 
