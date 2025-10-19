@@ -458,6 +458,43 @@ public class Solution {
         return res;
     }
 
+    public int trap(int[] height) {
+        // int l = 0;
+        // int r = height.length - 1;
+        // int maxL = 0;
+        // int maxR = 0;
+        // int sun = 0;
+        // while (l < r) {
+        //     maxL = Math.max(maxL, height[l]);
+        //     maxR = Math.max(maxR, height[r]);
+        //     if (height[l] < height[r]) {
+        //         sun += maxL - height[l];
+        //         l++;
+        //     } else {
+        //         sun += maxR - height[r];
+        //         r--;
+        //     }
+        // }
+        // return sun;
+        // 动态规划
+        int n = height.length;
+        int[] maxLefts = new int[n];
+        maxLefts[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            maxLefts[i] = Math.max(maxLefts[i - 1], height[i]);
+        }
+        int[] maxRights = new int[n];
+        maxRights[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            maxRights[i] = Math.max(maxRights[i + 1], height[i]);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans += Math.min(maxLefts[i], maxRights[i]) - height[i];
+        }
+        return ans;
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{2, 2, 333};
         int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
