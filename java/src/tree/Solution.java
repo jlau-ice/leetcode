@@ -167,7 +167,56 @@ public class Solution {
         return res;
     }
 
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            int max = Integer.MIN_VALUE;
+            for (int i = 0; i < n; i++) {
+                TreeNode node = queue.poll();
+                if (node.val > max)
+                    max = node.val;
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add(max);
+        }
+        return result;
+    }
 
+    public Node connect(Node root) {
+        Deque<Node> q = new ArrayDeque<>();
+        if (root == null) {
+            return root;
+        }
+        q.offer(root);
+        while (!q.isEmpty()) {
+            int n = q.size();
+            for (int i = 0; i < n; i++) {
+                Node node = q.poll();
+                if (i < n - 1) {
+                    node.next = q.peek();
+                }
+                if (node.left != null) {
+                    q.offer(node.left);
+                }
+                if (node.right != null) {
+                    q.offer(node.right);
+                }
+            }
+
+        }
+        return root;
+    }
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(15);
