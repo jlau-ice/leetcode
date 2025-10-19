@@ -1,6 +1,7 @@
 package tree;
 
 import model.TreeNode;
+import model.Node;
 
 import java.sql.Connection;
 import java.util.*;
@@ -102,7 +103,7 @@ public class Solution {
             int n = queue.size();
             for (int i = 0; i < n; i++) {
                 TreeNode node = queue.poll();
-                if (i==n-1) {
+                if (i == n - 1) {
                     result.add(node.val);
                 }
                 if (node.left != null) {
@@ -136,11 +137,37 @@ public class Solution {
                     queue.offer(node.right);
                 }
             }
-            Double a = (double) (sum/n);
+            Double a = (double) (sum / n);
             result.add(a);
         }
         return result;
     }
+
+    public List<List<Integer>> levelOrder(Node root) {
+        Deque<Node> queue = new ArrayDeque<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                Node node = queue.poll();
+                list.add(node.val);
+                if (!node.children.isEmpty()) {
+                    for (Node c : node.children) {
+                        queue.offer(c);
+                    }
+                }
+            }
+            res.add(list);
+        }
+        return res;
+    }
+
+
 
     public static void main(String[] args) {
         TreeNode root = new TreeNode(15);
