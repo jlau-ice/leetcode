@@ -548,6 +548,23 @@ public class Solution {
         return res;
     }
 
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return nums[0];
+        dp[0] = nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+        dp[1] = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < n; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+        return dp[n - 1];
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{2, 2, 333};
         int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
