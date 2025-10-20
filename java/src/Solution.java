@@ -517,6 +517,37 @@ public class Solution {
         return ans;
     }
 
+    public List<List<Integer>> generate(int numRows) {
+        // 00
+        // 10 11
+        // 20 21 22
+        // 30 31 32 33
+        // 40 41 42 43 44
+        // dp[i][j] = dp[i-1][j] + dp[i-1][j-1]
+        int[][] dp = new int[numRows][numRows];
+        dp[0][0] = 1;
+        // dp[1][0] = 1;
+        // dp[2][1] = 1;
+        for (int i = 1; i < numRows; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];
+                }
+            }
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> ls = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                ls.add(dp[i][j]);
+            }
+            res.add(ls);
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{2, 2, 333};
         int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
