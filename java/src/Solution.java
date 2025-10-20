@@ -495,6 +495,28 @@ public class Solution {
         return ans;
     }
 
+    public int trap2(int[] height) {
+        int n = height.length;
+        Deque<Integer> stack = new ArrayDeque<>();
+        if (n <= 2) {
+            return 0;
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                Integer top = stack.pop();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                Integer left = stack.peek();
+                int w = i - left - 1;
+                ans += (Math.min(height[i], height[left]) - (height[top])) * w;
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{2, 2, 333};
         int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
