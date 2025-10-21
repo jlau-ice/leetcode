@@ -565,10 +565,43 @@ public class Solution {
         return dp[n - 1];
     }
 
-    public static void main(String[] args) {
-        int[] arr = new int[]{2, 2, 333};
-        int[] matrix = new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7};
+    public static List<Integer> findAnagrams(String s, String p) {
+        // s sort ->  hash
+        // 左右指针 滑动 截取 —> sort -> hash
+        int n = p.length();
+        int i = 0;
+        int r = n - 1;
+        List<Integer> list = new ArrayList<>();
+        while (r < s.length()) {
+            if (hash(s.substring(i, r + 1), p)) {
+                list.add(i);
+            }
+            i++;
+            r++;
+        }
+        return list;
+    }
 
-        int a = maxArea(matrix);
+    public static boolean hash(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        int[] arr = new int[256];
+        int n = s2.length();
+        for (int i = 0; i < n; i++) {
+            arr[s1.charAt(i)]++;
+            arr[s2.charAt(i)]--;
+        }
+        for (int i = 0; i < 256; i++) {
+            if (arr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> anagrams = findAnagrams("cbaebabacd", "abc");
+        System.out.println(anagrams);
     }
 }
