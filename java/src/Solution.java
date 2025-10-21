@@ -600,6 +600,32 @@ public class Solution {
         return true;
     }
 
+    public List<Integer> findAnagrams2(String s, String p) {
+        List<Integer> list = new ArrayList<>();
+        if (p.length() > s.length()) {
+            return list;
+        }
+        int n = p.length();
+        int[] countS = new int[26];
+        int[] countP = new int[26];
+        for (int i = 0; i < n; i++) {
+            countP[p.charAt(i) - 'a']++;
+            countS[s.charAt(i) - 'a']++;
+
+        }
+        if (Arrays.equals(countP, countS)) {
+            list.add(0);
+        }
+        int m = s.length();
+        for (int i = n; i < m; i++) {
+            countS[s.charAt(i) - 'a']++;
+            countS[s.charAt(i - n) - 'a']--;
+            if (Arrays.equals(countP, countS)) {
+                list.add(i - n + 1);
+            }
+        }
+        return list;
+    }
     public static void main(String[] args) {
         List<Integer> anagrams = findAnagrams("cbaebabacd", "abc");
         System.out.println(anagrams);
