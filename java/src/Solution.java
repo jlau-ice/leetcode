@@ -660,40 +660,6 @@ public class Solution {
         return dp[n];
     }
 
-    public static List<Integer> findAnagrams(String s, String p) {
-        // s sort ->  hash
-        // 左右指针 滑动 截取 —> sort -> hash
-        int n = p.length();
-        int i = 0;
-        int r = n - 1;
-        List<Integer> list = new ArrayList<>();
-        while (r < s.length()) {
-            if (hash(s.substring(i, r + 1), p)) {
-                list.add(i);
-            }
-            i++;
-            r++;
-        }
-        return list;
-    }
-
-    public static boolean hash(String s1, String s2) {
-        if (s1.length() != s2.length()) {
-            return false;
-        }
-        int[] arr = new int[256];
-        int n = s2.length();
-        for (int i = 0; i < n; i++) {
-            arr[s1.charAt(i)]++;
-            arr[s2.charAt(i)]++;
-        }
-        for (int i = 0; i < 256; i++) {
-            if (arr[i] != 0) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public void setZeroes(int[][] matrix) {
         List<int[][]> list = new ArrayList<>();
