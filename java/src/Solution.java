@@ -2,6 +2,7 @@ import model.ListNode;
 import model.TreeNode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -323,7 +324,7 @@ public class Solution {
 
 
     public int[] searchRange(int[] nums, int target) {
-        return new int[] { erfen(nums, target, true), erfen(nums, target, false) };
+        return new int[]{erfen(nums, target, true), erfen(nums, target, false)};
     }
 
     public static int erfen(int[] nums, int target, boolean f) {
@@ -339,8 +340,8 @@ public class Solution {
             } else {
                 rowIndex = mid;
                 // f=true 继续往左
-                if(f) {
-                    r =  mid;
+                if (f) {
+                    r = mid;
                 } else {
                     l = mid + 1;
                 }
@@ -349,7 +350,94 @@ public class Solution {
         return rowIndex;
     }
 
+    public static int coinChange(int[] coins, int amount) {
+        long[] dp = new long[amount + 1];
+        if (amount == 0)
+            return 0;
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            long min = Integer.MAX_VALUE;
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {
+                    min = Math.min(dp[i - coins[j]] + 1, min);
+                }
+            }
+            dp[i] = min;
+        }
+        return dp[amount] > amount ? -1 : (int) dp[amount];
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        Set<String> set = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if(dp[j] && set.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+
+    public static List<Integer> findAnagrams(String s, String p) {
+        // s sort ->  hash
+        // 左右指针 滑动 截取 —> sort -> hash
+        int n = p.length();
+        int i = 0;
+        int r = n - 1;
+        List<Integer> list = new ArrayList<>();
+        while (r < s.length()) {
+            if (hash(s.substring(i, r + 1), p)) {
+                list.add(i);
+            }
+            i++;
+            r++;
+        }
+        return list;
+    }
+
+    public static boolean hash(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        int[] arr = new int[256];
+        int n = s2.length();
+        for (int i = 0; i < n; i++) {
+            arr[s1.charAt(i)]++;
+            arr[s2.charAt(i)]++;
+        }
+        for (int i = 0; i < 256; i++) {
+            if (arr[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setZeroes(int[][] matrix) {
+        List<int[][]> list = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    list.add(new int[][]{{i, j}});
+                }
+            }
+        }
+        for (int[][] ints : list) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][ints[0][1]] = 0;
+            }
+            for (int i = 0; i < matrix[0].length; i++) {
+                matrix[ints[0][0]][i] = 0;
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        int[] arr = new int[]{2,2,333};
+        findAnagrams("cbaebabacd",  "abc");
     }
 }
