@@ -189,6 +189,67 @@ func longestConsecutive2(nums []int) int {
 	return ans
 }
 
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+	dummy := &ListNode{
+		Next: head,
+	}
+	pre := dummy
+	for i := 1; i < left; i++ {
+		pre = pre.Next
+	}
+	star := pre.Next
+	end := head
+	for j := 1; j < right; j++ {
+		end = end.Next
+	}
+	next := end.Next
+	end.Next = nil
+	h, e := reverse(star)
+	pre.Next = h
+	e.Next = next
+	return dummy.Next
+}
+
+func reverse(head *ListNode) (*ListNode, *ListNode) {
+	pre := &ListNode{}
+	cur := head
+	for cur != nil {
+		next := cur.Next
+		cur.Next = pre
+
+		pre = cur
+		cur = next
+	}
+	return pre, head
+}
+
+func main() {
+	node := &ListNode{
+		Val:  1,
+		Next: nil,
+	}
+	node.Next = &ListNode{
+		Val:  2,
+		Next: nil,
+	}
+	//node.Next.Next = &ListNode{
+	//	Val:  3,
+	//	Next: nil,
+	//}
+	//node.Next.Next.Next = &ListNode{
+	//	Val:  4,
+	//	Next: nil,
+	//}
+	reverseBetween(node, 1, 2)
+}
+
 // sortList 148
 func sortList(head *ListNode) *ListNode {
 	return sort1(head)
