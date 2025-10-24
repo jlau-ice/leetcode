@@ -2,6 +2,7 @@ import model.ListNode;
 import model.TreeNode;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Solution {
 
@@ -626,8 +627,59 @@ public class Solution {
         }
         return list;
     }
+    public static int coinChange(int[] coins, int amount) {
+        long[] dp = new long[amount + 1];
+        if (amount == 0)
+            return 0;
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            long min = Integer.MAX_VALUE;
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {
+                    min = Math.min(dp[i - coins[j]] + 1, min);
+                }
+            }
+            dp[i] = min;
+        }
+        return dp[amount] > amount ? -1 : (int) dp[amount];
+    }
+
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        Set<String> set = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[n + 1];
+        dp[0] = true;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if(dp[j] && set.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+
+
+    public void setZeroes(int[][] matrix) {
+        List<int[][]> list = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    list.add(new int[][]{{i, j}});
+                }
+            }
+        }
+        for (int[][] ints : list) {
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][ints[0][1]] = 0;
+            }
+            for (int i = 0; i < matrix[0].length; i++) {
+                matrix[ints[0][0]][i] = 0;
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        List<Integer> anagrams = findAnagrams("cbaebabacd", "abc");
-        System.out.println(anagrams);
     }
 }
