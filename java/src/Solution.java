@@ -459,42 +459,6 @@ public class Solution {
         return res;
     }
 
-    public int trap(int[] height) {
-        // int l = 0;
-        // int r = height.length - 1;
-        // int maxL = 0;
-        // int maxR = 0;
-        // int sun = 0;
-        // while (l < r) {
-        //     maxL = Math.max(maxL, height[l]);
-        //     maxR = Math.max(maxR, height[r]);
-        //     if (height[l] < height[r]) {
-        //         sun += maxL - height[l];
-        //         l++;
-        //     } else {
-        //         sun += maxR - height[r];
-        //         r--;
-        //     }
-        // }
-        // return sun;
-        // 动态规划
-        int n = height.length;
-        int[] maxLefts = new int[n];
-        maxLefts[0] = height[0];
-        for (int i = 1; i < n; i++) {
-            maxLefts[i] = Math.max(maxLefts[i - 1], height[i]);
-        }
-        int[] maxRights = new int[n];
-        maxRights[n - 1] = height[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            maxRights[i] = Math.max(maxRights[i + 1], height[i]);
-        }
-        int ans = 0;
-        for (int i = 0; i < n; i++) {
-            ans += Math.min(maxLefts[i], maxRights[i]) - height[i];
-        }
-        return ans;
-    }
 
     public int trap2(int[] height) {
         int n = height.length;
@@ -627,6 +591,7 @@ public class Solution {
         }
         return list;
     }
+
     public static int coinChange(int[] coins, int amount) {
         long[] dp = new long[amount + 1];
         if (amount == 0)
@@ -651,7 +616,7 @@ public class Solution {
         dp[0] = true;
         for (int i = 1; i <= n; i++) {
             for (int j = 0; j < i; j++) {
-                if(dp[j] && set.contains(s.substring(j, i))) {
+                if (dp[j] && set.contains(s.substring(j, i))) {
                     dp[i] = true;
                     break;
                 }
@@ -678,6 +643,62 @@ public class Solution {
                 matrix[ints[0][0]][i] = 0;
             }
         }
+    }
+
+    public int trap(int[] height) {
+        // int l = 0;
+        // int r = height.length - 1;
+        // int maxL = 0;
+        // int maxR = 0;
+        // int sun = 0;
+        // while (l < r) {
+        //     maxL = Math.max(maxL, height[l]);
+        //     maxR = Math.max(maxR, height[r]);
+        //     if (height[l] < height[r]) {
+        //         sun += maxL - height[l];
+        //         l++;
+        //     } else {
+        //         sun += maxR - height[r];
+        //         r--;
+        //     }
+        // }
+        // return sun;
+        // 动态规划
+        // int n = height.length;
+        // int[] maxLefts = new int[n];
+        // maxLefts[0] = height[0];
+        // for (int i = 1; i < n; i++) {
+        //     maxLefts[i] = Math.max(maxLefts[i - 1], height[i]);
+        // }
+        // int[] maxRights = new int[n];
+        // maxRights[n - 1] = height[n - 1];
+        // for (int i = n - 2; i >= 0; i--) {
+        //     maxRights[i] = Math.max(maxRights[i + 1], height[i]);
+        // }
+        // int ans = 0;
+        // for (int i = 0; i < n; i++) {
+        //     ans += Math.min(maxLefts[i], maxRights[i]) - height[i];
+        // }
+        // return ans;
+        int n = height.length;
+        Deque<Integer> stack = new ArrayDeque<>();
+        if (n <= 2) {
+            return 0;
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                Integer top = stack.pop();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                Integer left = stack.peek();
+                int w = i - left - 1;
+                ans += (Math.min(height[i], height[left]) - (height[top])) * w;
+            }
+            stack.push(i);
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
