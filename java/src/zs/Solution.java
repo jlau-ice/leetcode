@@ -92,4 +92,31 @@ public class Solution {
         }
         return T - dup;
     }
+
+    public int[][] merge(int[][] intervals) {
+        List<int[]> list = new ArrayList<>();
+        Arrays.sort(intervals, Comparator.comparing(o -> o[0]));
+        int start = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] a = new int[2];
+            if (intervals[i][0] > intervals[i - 1][1]) {
+                // 前面的都合并
+                a[0] = start;
+                a[1] = intervals[i - 1][1];
+                list.add(a);
+                start = intervals[i][0];
+            } else {
+                list.add(intervals[i - 1]);
+                if (i == intervals.length - 1) {
+                    list.add(intervals[i]);
+                }
+            }
+        }
+        return list.toArray(new int[list.size()][]);
+    }
+
+    public void me(int[] nums,) {
+
+
+    }
 }
