@@ -701,6 +701,27 @@ public class Solution {
         return ans;
     }
 
+
+
+    public int maxProduct(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = nums[0];
+        dp[0][1] = nums[0];
+        int i = 1;
+        int max = nums[0];
+        while (i < n) {
+            int a = dp[i - 1][0] * nums[i];
+            int b = dp[i - 1][1] * nums[i];
+            dp[i][0] = Math.min(Math.min(a, b), nums[i]);
+            dp[i][1] = Math.max(Math.max(a, b), nums[i]);
+            max = Math.max(max, Math.max(dp[i][0], dp[i][1]));
+            i++;
+        }
+        return max;
+    }
+
+
     public static void main(String[] args) {
     }
 }
