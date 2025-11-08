@@ -721,6 +721,47 @@ public class Solution {
         return max;
     }
 
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums == null || nums.length == 0) return new int[0];
+        if (k == 1) return nums;
+        int n = nums.length;
+        int currMax = nums[0];
+        for (int i = 0; i < k; i++) {
+            if (nums[i] > currMax) {
+                currMax = nums[i];
+            }
+        }
+        if (k > n) {
+            return new int[]{currMax};
+        }
+        int[] result = new int[n - k + 1];
+        result[0] = currMax;
+        for (int i = 1, j = k; j < n; i++, j++) {
+            if (nums[i - 1] < currMax && nums[j] < currMax) {
+                result[i] = currMax;
+            } else if (nums[i - 1] == currMax && nums[j] < currMax) {
+                result[i] = getMax(nums, i, j);
+                currMax = result[i];
+            } else if (nums[i - 1] == currMax && nums[j] > currMax) {
+                result[i] = nums[j];
+                currMax = nums[j];
+            } else if (nums[i - 1] < currMax && nums[j] > currMax) {
+                result[i] = Math.max(nums[j], currMax);
+                currMax = result[i];
+            }
+        }
+        return result;
+    }
+
+    public int getMax(int[] arr, int m, int n) {
+        int max = arr[m];
+        for (int i = m; i <= n; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+        return max;
+    }
 
     public static void main(String[] args) {
     }
