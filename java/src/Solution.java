@@ -786,6 +786,28 @@ public class Solution {
         return res;
     }
 
+
+    public void sortColors(int[] nums) {
+        int i = nums.length - 1;
+        for (int j = nums.length - 1; j >= 0; j--) {
+            if (nums[j] != 0) {
+                int t = nums[j];
+                nums[j] = nums[i];
+                nums[i] = t;
+                i--;
+            }
+        }
+        i = nums.length - 1;
+        for (int j = nums.length - 1; j >= 0 && nums[j] != 0; j--) {
+            if (nums[j] == 2) {
+                int t = nums[j];
+                nums[j] = nums[i];
+                nums[i] = t;
+                i--;
+            }
+        }
+    }
+
     public static void main(String[] args) {
     }
 }
