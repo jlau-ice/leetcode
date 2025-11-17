@@ -132,8 +132,4 @@ public class Solution {
         return max;
     }
 
-    public void me(int[] nums,) {
-
-
-    }
 }
